@@ -12,7 +12,7 @@ class HomeView(View):
 		context['recipe'] = request.session.get('recipe',"")
 		
 			
-		return render(request, 'home.html', context)
+		return render(request, 'Home.html', context)
 	
 	
 	def post(self, request, *args, **kwargs):
@@ -22,5 +22,5 @@ class HomeView(View):
 			recipe = ask_chef_ai(prompt)
 			request.session['recipe'] = recipe
 		return redirect('home')
-		
+
 
