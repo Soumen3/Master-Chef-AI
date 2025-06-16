@@ -10,8 +10,8 @@ class HomeView(View):
 		context['form'] = chefForm()
 		
 		context['recipe'] = request.session.get('recipe',"")
+		context['error'] = request.session.pop('error', "")  # Get and remove error from session
 		
-			
 		return render(request, 'Home.html', context)
 	
 	
@@ -20,7 +20,12 @@ class HomeView(View):
 		if form.is_valid():
 			prompt = form.cleaned_data['prompt']
 			recipe = ask_chef_ai(prompt)
-			request.session['recipe'] = recipe
+			if recipe.startswith("ERROR:"):
+				request.session['error'] = recipe.replace("ERROR:", "").strip()
+				request.session['recipe'] = ""
+			else:
+				request.session['recipe'] = recipe
+				request.session['error'] = ""
 		return redirect('home')
 
 

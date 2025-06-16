@@ -17,10 +17,12 @@ def ask_chef_ai(prompt: str) -> str:
 		question = prompt
 	)
 
-	
 	repo_id = "mistralai/Mistral-7B-Instruct-v0.3"
 	llm = HuggingFaceEndpoint(repo_id = repo_id, huggingfacehub_api_token = api_key)
 
-	response = llm.invoke(formatted_prompt_template)
-	return response
+	try:
+		response = llm.invoke(formatted_prompt_template)
+		return response
+	except Exception as e:
+		return f"ERROR: {str(e)}.   Contact the admin if this error persists."
 
